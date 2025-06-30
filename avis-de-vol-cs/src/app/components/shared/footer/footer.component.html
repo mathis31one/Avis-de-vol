@@ -1,0 +1,50 @@
+<footer class="app-footer">
+  <div class="footer-content">
+    <div class="footer-sections">
+      <div class="footer-section">
+        <h4 class="section-title">Avis de Vol</h4>
+        <p class="section-description">Your trusted flight review platform</p>
+      </div>
+      
+      <div class="footer-section">
+        <h4 class="section-title">Quick Links</h4>
+        <nav class="footer-nav">
+          <a routerLink="/about" class="footer-link">About Us</a>
+          <a routerLink="/contact" class="footer-link">Contact</a>
+          <a routerLink="/privacy" class="footer-link">Privacy Policy</a>
+          <a routerLink="/terms" class="footer-link">Terms of Service</a>
+        </nav>
+      </div>
+      
+      <div class="footer-section">
+        <h4 class="section-title">Follow Us</h4>
+        <div class="social-links">
+          <button mat-icon-button 
+                  class="social-btn" 
+                  aria-label="Facebook"
+                  matTooltip="Follow us on Facebook">
+            <mat-icon>facebook</mat-icon>
+          </button>
+          <button mat-icon-button 
+                  class="social-btn" 
+                  aria-label="Twitter"
+                  matTooltip="Follow us on Twitter">
+            <mat-icon svgIcon="twitter"></mat-icon>
+          </button>
+          <button mat-icon-button 
+                  class="social-btn" 
+                  aria-label="Instagram"
+                  matTooltip="Follow us on Instagram">
+            <mat-icon>photo_camera</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <div class="copyright">
+        <span>&copy; {{ currentYear }} Avis de Vol. All rights reserved.</span>
+      </div>
+    </div>
+  </div>
+</footer>

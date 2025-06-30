@@ -1,0 +1,88 @@
+<div class="page-layout">
+  <app-header [currentUser]="currentUser" (logout)="logout()"></app-header>
+
+  <!-- Main Content -->
+<div class="main-content">
+  <!-- Navigation Cards -->
+  <section class="nav-section">
+    <div class="nav-grid">
+      <mat-card class="nav-card primary-card" routerLink="/make-review">
+        <mat-card-content>
+          <mat-icon class="nav-icon">rate_review</mat-icon>
+          <h3>Make a Review</h3>
+          <p>Share your flight experience</p>
+        </mat-card-content>
+      </mat-card>
+      
+      <mat-card class="nav-card accent-card" routerLink="/reviews">
+        <mat-card-content>
+          <mat-icon class="nav-icon">reviews</mat-icon>
+          <h3>See Reviews</h3>
+          <p>Browse flight experiences</p>
+        </mat-card-content>
+      </mat-card>
+      
+      <mat-card class="nav-card" routerLink="/airlines">
+        <mat-card-content>
+          <mat-icon class="nav-icon">flight</mat-icon>
+          <h3>Airlines</h3>
+          <p>Compare airline services</p>
+        </mat-card-content>
+      </mat-card>
+      
+      <mat-card class="nav-card" routerLink="/routes">
+        <mat-card-content>
+          <mat-icon class="nav-icon">map</mat-icon>
+          <h3>Routes</h3>
+          <p>Explore flight routes</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats-section">
+    <h2>Community Stats</h2>
+    <div class="stats-grid">
+      <mat-card class="stat-card" *ngFor="let stat of stats">
+        <mat-card-content>
+          <mat-icon class="stat-icon">{{ stat.icon }}</mat-icon>
+          <div class="stat-number">{{ stat.displayNumber }}</div>
+          <div class="stat-label">{{ stat.label }}</div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </section>
+
+  <!-- Admin Section (only for admin users) -->
+  <section class="admin-section" *ngIf="currentUser?.role === Role.ADMIN">
+    <mat-card class="admin-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>admin_panel_settings</mat-icon>
+          Admin Panel
+        </mat-card-title>
+        <mat-card-subtitle>Manage the application</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="admin-actions">
+          <button mat-raised-button color="primary" routerLink="/admin">
+            <mat-icon>dashboard</mat-icon>
+            Admin Dashboard
+          </button>
+          <button mat-raised-button color="accent" routerLink="/admin/users">
+            <mat-icon>people</mat-icon>
+            Manage Users
+          </button>
+          <button mat-raised-button routerLink="/admin/reviews">
+            <mat-icon>moderation</mat-icon>
+            Moderate Reviews
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </section>
+  </div>
+
+  <app-footer></app-footer>
+</div>

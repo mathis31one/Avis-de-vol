@@ -1,0 +1,63 @@
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15
+    container_name: avis-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: avis_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - avis-network
+
+  # Spring Boot Backend
+  backend:
+    build:
+      context: ./avis-de-vol-ss
+      dockerfile: Dockerfile
+    container_name: avis-backend
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/avis_db
+      - SPRING_DATASOURCE_USERNAME=username
+      - SPRING_DATASOURCE_PASSWORD=password
+    depends_on:
+      - postgres
+    networks:
+      - avis-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+  # Angular Frontend
+  frontend:
+    build:
+      context: ./avis-de-vol-cs
+      dockerfile: Dockerfile
+    container_name: avis-frontend
+    restart: always
+    ports:
+      - "80:80"
+      - "4200:80"  # Alternative port for development
+    depends_on:
+      - backend
+    networks:
+      - avis-network
+
+volumes:
+  postgres_data:
+
+networks:
+  avis-network:
+    driver: bridge

@@ -1,0 +1,102 @@
+<div class="admin-panel-container">
+  <mat-toolbar color="primary" class="admin-toolbar">
+    <mat-icon>admin_panel_settings</mat-icon>
+    <span>Admin Panel</span>
+    <span class="spacer"></span>
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>
+        <mat-icon>account_circle</mat-icon>
+        <span>Profile</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>settings</mat-icon>
+        <span>Settings</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar>
+
+  <div class="admin-content">
+    <mat-card class="admin-info-card" *ngIf="currentUser">
+      <mat-card-header>
+        <div mat-card-avatar>
+          <mat-icon>person</mat-icon>
+        </div>
+        <mat-card-title>Welcome back!</mat-card-title>
+        <mat-card-subtitle>{{ currentUser.firstName }} {{ currentUser.lastName }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="user-details">
+          <div class="detail-item">
+            <mat-icon>badge</mat-icon>
+            <span class="label">Role:</span>
+            <span class="value">{{ currentUser.role }}</span>
+          </div>
+          <div class="detail-item">
+            <mat-icon>email</mat-icon>
+            <span class="label">Email:</span>
+            <span class="value">{{ currentUser.email }}</span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="admin-actions-card">
+      <mat-card-header>
+        <mat-card-title>Admin Actions</mat-card-title>
+        <mat-card-subtitle>Manage your system</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-grid-list cols="2" rowHeight="120px" gutterSize="16px">
+          <mat-grid-tile>
+            <button mat-raised-button color="primary" class="action-button">
+              <mat-icon>people</mat-icon>
+              <span>Manage Users</span>
+            </button>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <button mat-raised-button color="accent" class="action-button">
+              <mat-icon>assessment</mat-icon>
+              <span>View Reports</span>
+            </button>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <button mat-raised-button color="warn" class="action-button">
+              <mat-icon>settings</mat-icon>
+              <span>System Settings</span>
+            </button>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <button mat-raised-button class="action-button flight-button">
+              <mat-icon>flight</mat-icon>
+              <span>Flight Management</span>
+            </button>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="recent-activity-card">
+      <mat-card-header>
+        <mat-card-title>Recent Activity</mat-card-title>
+        <mat-card-subtitle>Latest system updates</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="activity-placeholder">
+          <mat-icon>timeline</mat-icon>
+          <p>This section would show recent system activity, new registrations, and other important updates.</p>
+          <button mat-stroked-button color="primary">
+            <mat-icon>refresh</mat-icon>
+            View All Activity
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+<mat-toolbar color="primary" class="app-header">
+  <mat-toolbar-row class="header-row">
+    <div class="app-title-section">
+      <mat-icon class="app-icon">flight</mat-icon>
+      <span class="app-title">Avis de Vol</span>
+    </div>
+    
+    <div class="header-spacer"></div>
+    
+    <div class="user-section" *ngIf="currentUser">
+      <div class="user-info">
+        <mat-icon class="user-icon">account_circle</mat-icon>
+        <span class="user-name">{{ currentUser.firstName }} {{ currentUser.lastName }}</span>
+      </div>
+      <button mat-icon-button 
+              class="logout-btn" 
+              (click)="onLogout()" 
+              matTooltip="Logout"
+              aria-label="Logout">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>

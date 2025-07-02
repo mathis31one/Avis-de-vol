@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { ReviewService } from '../../services/review.service';
+import { FlightService } from '../../services/flight.service';
 import { User, Role } from '../../models/auth.model';
 
 interface Feature {
@@ -16,6 +18,7 @@ interface Stat {
   label: string;
   icon: string;
   growth: number;
+  isLoading?: boolean;
 }
 
 @Component({
@@ -68,18 +71,20 @@ export class LandingComponent implements OnInit {
 
   stats: Stat[] = [
     {
-      number: 10000,
-      displayNumber: '10,000+',
+      number: 0,
+      displayNumber: '0+',
       label: 'Flight Reviews',
       icon: 'rate_review',
-      growth: 15
+      growth: 15,
+      isLoading: true
     },
     {
-      number: 500,
-      displayNumber: '500+',
+      number: 0,
+      displayNumber: '0+',
       label: 'Airlines Covered',
       icon: 'flight',
-      growth: 8
+      growth: 8,
+      isLoading: true
     },
     {
       number: 50000,
@@ -89,16 +94,19 @@ export class LandingComponent implements OnInit {
       growth: 23
     },
     {
-      number: 1000,
-      displayNumber: '1,000+',
+      number: 0,
+      displayNumber: '0+',
       label: 'Routes Reviewed',
       icon: 'map',
-      growth: 12
+      growth: 12,
+      isLoading: true
     }
   ];
 
   constructor(
     private authService: AuthService,
+    private reviewService: ReviewService,
+    private flightService: FlightService,
     private router: Router
   ) {}
 
@@ -113,6 +121,78 @@ export class LandingComponent implements OnInit {
     this.authService.currentUser$.subscribe((user: User | null) => {
       this.currentUser = user;
     });
+    
+    // Load real statistics from the backend
+    this.loadStatistics();
+  }
+  
+  loadStatistics(): void {
+    // Get review count
+    this.reviewService.getReviewCount().subscribe({
+      next: (count) => {
+        const reviewStat = this.stats.find(s => s.label === 'Flight Reviews');
+        if (reviewStat) {
+          reviewStat.number = count;
+          reviewStat.displayNumber = this.formatNumber(count);
+          reviewStat.isLoading = false;
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching review count:', error);
+        const reviewStat = this.stats.find(s => s.label === 'Flight Reviews');
+        if (reviewStat) {
+          reviewStat.isLoading = false;
+        }
+      }
+    });
+    
+    // Get company count
+    this.flightService.getCompanyCount().subscribe({
+      next: (count) => {
+        const companyStat = this.stats.find(s => s.label === 'Airlines Covered');
+        if (companyStat) {
+          companyStat.number = count;
+          companyStat.displayNumber = this.formatNumber(count);
+          companyStat.isLoading = false;
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching company count:', error);
+        const companyStat = this.stats.find(s => s.label === 'Airlines Covered');
+        if (companyStat) {
+          companyStat.isLoading = false;
+        }
+      }
+    });
+    
+    // Get flight count for routes
+    this.flightService.getFlightCount().subscribe({
+      next: (count) => {
+        const routesStat = this.stats.find(s => s.label === 'Routes Reviewed');
+        if (routesStat) {
+          routesStat.number = count;
+          routesStat.displayNumber = this.formatNumber(count);
+          routesStat.isLoading = false;
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching flight count:', error);
+        const routesStat = this.stats.find(s => s.label === 'Routes Reviewed');
+        if (routesStat) {
+          routesStat.isLoading = false;
+        }
+      }
+    });
+  }
+  
+  formatNumber(num: number): string {
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(1) + 'M+';
+    } else if (num >= 1000) {
+      return (num / 1000).toFixed(1) + 'K+';
+    } else {
+      return num.toString();
+    }
   }
 
   logout(): void {

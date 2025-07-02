@@ -67,4 +67,8 @@ export class ReviewService {
   getReviewById(id: number): Observable<Review> {
     return this.http.get<Review>(`${this.API_URL}/${id}`);
   }
+  
+  getReviewCount(): Observable<number> {
+    return this.http.get<number>(`${this.API_URL}/count`);
+  }
 }

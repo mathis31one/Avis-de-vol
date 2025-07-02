@@ -47,7 +47,8 @@
       <mat-card class="stat-card" *ngFor="let stat of stats">
         <mat-card-content>
           <mat-icon class="stat-icon">{{ stat.icon }}</mat-icon>
-          <div class="stat-number">{{ stat.displayNumber }}</div>
+          <div *ngIf="!stat.isLoading" class="stat-number">{{ stat.displayNumber }}</div>
+          <mat-spinner *ngIf="stat.isLoading" diameter="30" class="stat-spinner"></mat-spinner>
           <div class="stat-label">{{ stat.label }}</div>
         </mat-card-content>
       </mat-card>

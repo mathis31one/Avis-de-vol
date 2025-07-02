@@ -82,6 +82,14 @@ export class FlightService {
     return this.http.get<DateRange>(`${this.API_URL}/date-range`);
   }
 
+  getFlightCount(): Observable<number> {
+    return this.http.get<number>(`${this.API_URL}/count`);
+  }
+
+  getCompanyCount(): Observable<number> {
+    return this.http.get<number>(`${this.API_URL}/companies/count`);
+  }
+
   private formatDate(date: Date): string {
     return date.toISOString().split('T')[0];
   }

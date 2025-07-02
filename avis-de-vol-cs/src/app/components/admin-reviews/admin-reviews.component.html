@@ -42,6 +42,17 @@
               </mat-select>
               <mat-icon matSuffix>filter_list</mat-icon>
             </mat-form-field>
+
+            <!-- Add notation filter dropdown -->
+            <mat-form-field appearance="outline">
+              <mat-label>Rating</mat-label>
+              <mat-select formControlName="notation">
+                <mat-option *ngFor="let option of notationOptions" [value]="option.value">
+                  {{ option.label }}
+                </mat-option>
+              </mat-select>
+              <mat-icon matSuffix>star_rate</mat-icon>
+            </mat-form-field>
           </div>
           
           <div class="filter-actions">

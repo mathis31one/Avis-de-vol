@@ -32,6 +32,16 @@ export class AdminReviewsComponent implements OnInit {
     { value: ReviewStatus.REJETE, label: 'Rejected Reviews' }
   ];
 
+  // Add notation options array
+  notationOptions = [
+    { value: '', label: 'Any Rating' },
+    { value: 1, label: '1 Star' },
+    { value: 2, label: '2 Stars' },
+    { value: 3, label: '3 Stars' },
+    { value: 4, label: '4 Stars' },
+    { value: 5, label: '5 Stars' }
+  ];
+
   expandedReviewId: number | null = null;
   submittingResponse = false;
 
@@ -46,7 +56,8 @@ export class AdminReviewsComponent implements OnInit {
   ) {
     this.filterForm = this.formBuilder.group({
       company: [''],
-      status: ['']
+      status: [''],
+      notation: ['']  // Add notation field to form group
     });
     
     this.responseForm = this.formBuilder.group({
@@ -78,7 +89,8 @@ export class AdminReviewsComponent implements OnInit {
     this.isLoading = true;
     const filters = {
       company: this.filterForm.value.company || undefined,
-      status: this.filterForm.value.status || undefined
+      status: this.filterForm.value.status || undefined,
+      notation: this.filterForm.value.notation || undefined  // Include notation filter
     };
 
     this.reviewService.getReviews(filters).subscribe({

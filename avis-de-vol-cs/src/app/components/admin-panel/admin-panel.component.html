@@ -32,27 +32,15 @@
       <mat-card-content>
         <mat-grid-list cols="2" rowHeight="120px" gutterSize="16px">
           <mat-grid-tile>
-            <button mat-raised-button color="primary" class="action-button">
-              <mat-icon>people</mat-icon>
-              <span>Manage Users</span>
+            <button mat-raised-button class="action-button flight-button" routerLink="/admin/flights">
+              <mat-icon>flight</mat-icon>
+              <span>Flight Management</span>
             </button>
           </mat-grid-tile>
           <mat-grid-tile>
             <button mat-raised-button color="accent" class="action-button" routerLink="/admin/reviews">
               <mat-icon>rate_review</mat-icon>
               <span>Moderate Reviews</span>
-            </button>
-          </mat-grid-tile>
-          <mat-grid-tile>
-            <button mat-raised-button color="warn" class="action-button">
-              <mat-icon>settings</mat-icon>
-              <span>System Settings</span>
-            </button>
-          </mat-grid-tile>
-          <mat-grid-tile>
-            <button mat-raised-button class="action-button flight-button" routerLink="/admin/flights">
-              <mat-icon>flight</mat-icon>
-              <span>Flight Management</span>
             </button>
           </mat-grid-tile>
         </mat-grid-list>

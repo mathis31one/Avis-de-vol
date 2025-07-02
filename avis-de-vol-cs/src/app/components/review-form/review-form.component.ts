@@ -35,7 +35,7 @@ export class ReviewFormComponent implements OnInit {
   ) {
     this.reviewForm = this.formBuilder.group({
       notation: [0, [Validators.required, Validators.min(1), Validators.max(5)]],
-      comment: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]]
+      content: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]]
     });
   }
 
@@ -111,7 +111,7 @@ export class ReviewFormComponent implements OnInit {
     const reviewData: ReviewCreateDto = {
       flightId: this.selectedFlight.id,
       notation: this.reviewForm.value.notation,
-      comment: this.reviewForm.value.comment
+      content: this.reviewForm.value.content
     };
 
     this.submitting = true;
@@ -146,7 +146,7 @@ export class ReviewFormComponent implements OnInit {
       }
     }
     
-    if (controlName === 'comment') {
+    if (controlName === 'content') {
       if (control.errors['minlength']) {
         return `Comment must be at least ${control.errors['minlength'].requiredLength} characters`;
       }

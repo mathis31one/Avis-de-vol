@@ -1,7 +1,7 @@
 export interface Review {
   id?: number;
   flightId: number;
-  comment: string;
+  content: string;
   notation: number; // 1-5 stars
   company?: string;
   flightNumber?: string;
@@ -19,12 +19,12 @@ export enum ReviewStatus {
 
 export interface ReviewCreateDto {
   flightId: number;
-  comment: string;
+  content: string;
   notation: number;
 }
 
 export interface ReviewUpdateDto {
-  comment?: string;
+  content?: string;
   notation?: number;
 }
 

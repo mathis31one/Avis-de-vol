@@ -25,4 +25,10 @@ public interface ReviewRepository extends JpaRepository<Review, Integer>, JpaSpe
     // Method to count all reviews
     @Query("SELECT COUNT(r) FROM Review r")
     long countAllReviews();
+
+    // Method to check if reviews exist for a specific account
+    boolean existsByAccountId(Integer accountId);
+
+    // Method to check if reviews exist for a specific flight
+    boolean existsByFlightId(Integer flightId);
 }

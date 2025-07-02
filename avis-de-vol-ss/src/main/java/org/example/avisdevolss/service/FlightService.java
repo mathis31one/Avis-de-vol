@@ -3,6 +3,7 @@ package org.example.avisdevolss.service;
 import org.example.avisdevolss.controller.FlightController;
 import org.example.avisdevolss.entity.Flight;
 import org.example.avisdevolss.repository.FlightRepository;
+import org.example.avisdevolss.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +16,12 @@ import java.util.stream.Collectors;
 public class FlightService {
 
     private final FlightRepository flightRepository;
+    private final ReviewRepository reviewRepository;
 
     @Autowired
-    public FlightService(FlightRepository flightRepository) {
+    public FlightService(FlightRepository flightRepository, ReviewRepository reviewRepository) {
         this.flightRepository = flightRepository;
+        this.reviewRepository = reviewRepository;
     }
 
     public Flight createFlight(Flight flight) {
@@ -51,6 +54,12 @@ public class FlightService {
         if (!flightRepository.existsById(id)) {
             throw new IllegalArgumentException("Flight not found with id: " + id);
         }
+
+        // Check if flight has associated reviews
+        if (reviewRepository.existsByFlightId(id)) {
+            throw new IllegalArgumentException("Cannot delete flight with id: " + id + " because it has associated reviews");
+        }
+
         flightRepository.deleteById(id);
     }
 

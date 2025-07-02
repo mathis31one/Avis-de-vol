@@ -8,6 +8,7 @@ import org.example.avisdevolss.dto.PasswordUpdateDto;
 import org.example.avisdevolss.entity.Account;
 import org.example.avisdevolss.entity.Role;
 import org.example.avisdevolss.repository.AccountRepository;
+import org.example.avisdevolss.repository.ReviewRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 public class AccountService {
 
     private final AccountRepository accountRepository;
+    private final ReviewRepository reviewRepository;
     private final PasswordEncoder passwordEncoder;
 
     /**
@@ -117,7 +119,7 @@ public class AccountService {
     /**
      * Delete account by ID
      * @param id the account ID
-     * @throws IllegalArgumentException if account not found
+     * @throws IllegalArgumentException if account not found or has associated reviews
      */
     public void deleteAccount(Integer id) {
         log.info("Deleting account with ID: {}", id);
@@ -126,6 +128,11 @@ public class AccountService {
             throw new IllegalArgumentException("Account not found with ID: " + id);
         }
         
+        // Check if account has associated reviews
+        if (reviewRepository.existsByAccountId(id)) {
+            throw new IllegalArgumentException("Cannot delete account with ID: " + id + " because it has associated reviews");
+        }
+
         accountRepository.deleteById(id);
         log.info("Successfully deleted account with ID: {}", id);
     }

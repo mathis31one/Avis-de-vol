@@ -23,5 +23,5 @@ public class Account {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
-    private Role role = Role.USER; // Default role is USER
+    private Role role = Role.USER;
 }

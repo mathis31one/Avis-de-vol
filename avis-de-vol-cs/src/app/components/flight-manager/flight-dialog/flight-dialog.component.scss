@@ -1,0 +1,35 @@
+h2[mat-dialog-title] {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 16px 0;
+  color: #1976d2;
+  
+  mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 400px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+mat-dialog-actions {
+  padding: 16px 0 0 0;
+  gap: 8px;
+}
+
+@media (max-width: 500px) {
+  .form-fields {
+    min-width: 300px;
+  }
+}

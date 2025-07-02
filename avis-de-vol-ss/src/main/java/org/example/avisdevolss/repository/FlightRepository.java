@@ -2,6 +2,7 @@ package org.example.avisdevolss.repository;
 
 import org.example.avisdevolss.entity.Flight;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.Date;
 import java.util.List;
@@ -18,4 +19,13 @@ public interface FlightRepository extends JpaRepository<Flight, Integer> {
     List<Flight> findByDateBetween(Date startDate, Date endDate);
 
     List<Flight> findByFlightNumberContainingIgnoreCase(String flightNumber);
+
+    @Query("SELECT DISTINCT f.company FROM Flight f ORDER BY f.company")
+    List<String> findAllCompanies();
+
+    @Query("SELECT MIN(f.date) FROM Flight f")
+    Date findMinDate();
+
+    @Query("SELECT MAX(f.date) FROM Flight f")
+    Date findMaxDate();
 }

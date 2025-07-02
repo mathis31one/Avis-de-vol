@@ -26,24 +26,24 @@ public class FlightController {
     }
 
     @PostMapping
-    public ResponseEntity<FlightDTO> createFlight(@RequestBody FlightDTO flightDTO) {
+    public ResponseEntity<?> createFlight(@RequestBody FlightDTO flightDTO) {
         try {
             Flight flight = convertToEntity(flightDTO);
             Flight createdFlight = flightService.createFlight(flight);
             return ResponseEntity.status(HttpStatus.CREATED).body(convertToDTO(createdFlight));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FlightDTO> updateFlight(@PathVariable Integer id, @RequestBody FlightDTO flightDTO) {
+    public ResponseEntity<?> updateFlight(@PathVariable Integer id, @RequestBody FlightDTO flightDTO) {
         try {
             Flight flight = convertToEntity(flightDTO);
             Flight updatedFlight = flightService.updateFlight(id, flight);
             return ResponseEntity.ok(convertToDTO(updatedFlight));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
         }
     }
 
@@ -58,8 +58,12 @@ public class FlightController {
     }
 
     @GetMapping
-    public ResponseEntity<List<FlightDTO>> findAllFlights() {
-        List<Flight> flights = flightService.findAllFlights();
+    public ResponseEntity<List<FlightDTO>> findAllFlights(
+            @RequestParam(required = false) String company,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
+        
+        List<Flight> flights = flightService.findFlights(company, startDate, endDate);
         List<FlightDTO> flightDTOs = flights.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
@@ -88,15 +92,10 @@ public class FlightController {
         return ResponseEntity.ok(flightDTOs);
     }
 
-    @GetMapping("/date")
-    public ResponseEntity<List<FlightDTO>> findByDate(
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
-        List<Flight> flights = flightService.findByDate(startDate, endDate);
-        List<FlightDTO> flightDTOs = flights.stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(flightDTOs);
+    @GetMapping("/companies")
+    public ResponseEntity<List<String>> findAllCompanies() {
+        List<String> companies = flightService.findAllCompanies();
+        return ResponseEntity.ok(companies);
     }
 
     private FlightDTO convertToDTO(Flight flight) {
@@ -115,5 +114,22 @@ public class FlightController {
         flight.setCompany(dto.getCompany());
         flight.setDate(dto.getDate());
         return flight;
+    }
+
+    // Error response class
+    public static class ErrorResponse {
+        private String message;
+
+        public ErrorResponse(String message) {
+            this.message = message;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
     }
 }

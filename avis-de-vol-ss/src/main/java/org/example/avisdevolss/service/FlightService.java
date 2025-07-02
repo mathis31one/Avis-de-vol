@@ -1,5 +1,6 @@
 package org.example.avisdevolss.service;
 
+import org.example.avisdevolss.controller.FlightController;
 import org.example.avisdevolss.entity.Flight;
 import org.example.avisdevolss.repository.FlightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class FlightService {
@@ -70,5 +72,42 @@ public class FlightService {
 
     public List<Flight> findByDate(Date startDate, Date endDate) {
         return flightRepository.findByDateBetween(startDate, endDate);
+    }
+
+    public List<Flight> findFlights(String company, Date startDate, Date endDate) {
+        List<Flight> flights = flightRepository.findAll();
+
+        // Filter by company if provided
+        if (company != null && !company.trim().isEmpty()) {
+            flights = flights.stream()
+                    .filter(flight -> flight.getCompany().toLowerCase().contains(company.toLowerCase()))
+                    .collect(Collectors.toList());
+        }
+
+        // Filter by date range if provided
+        if (startDate != null && endDate != null) {
+            flights = flights.stream()
+                    .filter(flight -> {
+                        Date flightDate = flight.getDate();
+                        return !flightDate.before(startDate) && !flightDate.after(endDate);
+                    })
+                    .collect(Collectors.toList());
+        } else if (startDate != null) {
+            // Only start date provided
+            flights = flights.stream()
+                    .filter(flight -> !flight.getDate().before(startDate))
+                    .collect(Collectors.toList());
+        } else if (endDate != null) {
+            // Only end date provided
+            flights = flights.stream()
+                    .filter(flight -> !flight.getDate().after(endDate))
+                    .collect(Collectors.toList());
+        }
+
+        return flights;
+    }
+
+    public List<String> findAllCompanies() {
+        return flightRepository.findAllCompanies();
     }
 }

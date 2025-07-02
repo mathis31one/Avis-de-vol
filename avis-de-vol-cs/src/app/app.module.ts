@@ -24,6 +24,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -41,6 +43,7 @@ import { FlightsComponent } from './components/flights/flights.component';
 import { ReviewFormComponent } from './components/review-form/review-form.component';
 import { ReviewsComponent } from './components/reviews/reviews.component';
 import { AdminReviewsComponent } from './components/admin-reviews/admin-reviews.component';
+import { ResponseDialogComponent } from './components/response-dialog/response-dialog.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +60,8 @@ import { AdminReviewsComponent } from './components/admin-reviews/admin-reviews.
     FlightsComponent,
     ReviewFormComponent,
     ReviewsComponent,
-    AdminReviewsComponent
+    AdminReviewsComponent,
+    ResponseDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -84,7 +88,9 @@ import { AdminReviewsComponent } from './components/admin-reviews/admin-reviews.
     MatNativeDateModule,
     MatAutocompleteModule,
     MatSelectModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatDividerModule,
+    MatListModule
   ],
   providers: [
     {

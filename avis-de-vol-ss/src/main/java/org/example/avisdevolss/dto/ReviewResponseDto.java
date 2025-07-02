@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.example.avisdevolss.entity.ReviewStatus;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class ReviewResponseDto {
@@ -15,4 +17,5 @@ public class ReviewResponseDto {
     private String accountLastName;
     private String flightNumber;
     private String company;
+    private List<ResponseDto> responses;
 }

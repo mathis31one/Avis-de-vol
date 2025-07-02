@@ -131,6 +131,63 @@
           <div class="review-content">
             <p>{{ review.content }}</p>
           </div>
+          
+          <mat-divider></mat-divider>
+          
+          <!-- Responses section -->
+          <div class="responses-section">
+            <div class="responses-header">
+              <button mat-button color="primary" (click)="toggleResponses(review)">
+                <mat-icon>{{ expandedReviewId === review.id ? 'expand_less' : 'expand_more' }}</mat-icon>
+                {{ expandedReviewId === review.id ? 'Hide' : 'Show' }} Responses 
+                <span *ngIf="review.responses">({{ review.responses.length }})</span>
+              </button>
+              
+              <button 
+                mat-button 
+                color="accent"
+                (click)="openResponseDialog(review)">
+                <mat-icon>reply</mat-icon>
+                Add Response
+              </button>
+            </div>
+            
+            <div class="responses-container" *ngIf="expandedReviewId === review.id">
+              <!-- Loading responses message -->
+              <div *ngIf="!review.responses" class="loading-responses">
+                <mat-spinner diameter="20"></mat-spinner> Loading responses...
+              </div>
+              
+              <!-- No responses message -->
+              <div *ngIf="review.responses && review.responses.length === 0" class="no-responses">
+                <mat-icon>chat_bubble_outline</mat-icon>
+                <p>No responses yet</p>
+              </div>
+              
+              <!-- Responses list -->
+              <div *ngIf="review.responses && review.responses.length > 0" class="responses-list">
+                <div *ngFor="let response of review.responses" class="response-item">
+                  <div class="response-content">
+                    <div class="response-author">
+                      <mat-icon>person</mat-icon>
+                      <span>{{ response.userFirstName || response.userName || 'Anonymous' }}</span>
+                      
+                      <!-- Delete response button for admin -->
+                      <button 
+                        mat-icon-button 
+                        color="warn" 
+                        class="delete-response-btn"
+                        (click)="$event.stopPropagation(); deleteResponse(review, response.id)"
+                        *ngIf="response.id">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                    <p>{{ response.content }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </mat-card-content>
       </mat-card>
     </div>

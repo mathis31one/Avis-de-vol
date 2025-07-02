@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
 import { ReviewService } from '../../services/review.service';
+import { ResponseService } from '../../services/response.service';
 import { FlightService } from '../../services/flight.service';
-import { Review, ReviewStatus } from '../../models/review.model';
+import { Review, ReviewStatus, ResponseCreateDto } from '../../models/review.model';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../models/auth.model';
+import { ResponseDialogComponent } from '../response-dialog/response-dialog.component';
 
 @Component({
   selector: 'app-admin-reviews',
@@ -19,6 +22,7 @@ export class AdminReviewsComponent implements OnInit {
   isLoading = false;
   isProcessing = false;
   filterForm: FormGroup;
+  responseForm: FormGroup;
   ReviewStatus = ReviewStatus; // Make enum available to template
 
   statusOptions = [
@@ -28,16 +32,25 @@ export class AdminReviewsComponent implements OnInit {
     { value: ReviewStatus.REJETE, label: 'Rejected Reviews' }
   ];
 
+  expandedReviewId: number | null = null;
+  submittingResponse = false;
+
   constructor(
     private reviewService: ReviewService,
+    private responseService: ResponseService,
     private flightService: FlightService,
     private authService: AuthService,
     private formBuilder: FormBuilder,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog
   ) {
     this.filterForm = this.formBuilder.group({
       company: [''],
       status: ['']
+    });
+    
+    this.responseForm = this.formBuilder.group({
+      content: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(300)]]
     });
   }
 
@@ -147,6 +160,81 @@ export class AdminReviewsComponent implements OnInit {
           console.error('Error deleting review:', error);
           this.showSnackBar('Error deleting review', 'error');
           this.isProcessing = false;
+        }
+      });
+    }
+  }
+
+  toggleResponses(review: Review): void {
+    if (review.id === this.expandedReviewId) {
+      this.expandedReviewId = null;
+    } else {
+      this.expandedReviewId = review.id || null;
+      this.loadResponses(review);
+    }
+  }
+
+  loadResponses(review: Review): void {
+    if (!review.id) return;
+    
+    if (!review.responses) {
+      this.responseService.getResponsesByReview(review.id).subscribe({
+        next: (responses) => {
+          review.responses = responses;
+        },
+        error: (error) => {
+          console.error('Error loading responses:', error);
+          this.showSnackBar('Error loading responses', 'error');
+        }
+      });
+    }
+  }
+
+  openResponseDialog(review: Review): void {
+    const dialogRef = this.dialog.open(ResponseDialogComponent, {
+      width: '600px',
+      data: { review, isAdmin: true }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && review.id) {
+        this.submittingResponse = true;
+        const responseDto: ResponseCreateDto = {
+          content: result.content,
+          reviewId: review.id
+        };
+
+        this.responseService.createResponse(responseDto).subscribe({
+          next: (response) => {
+            if (!review.responses) {
+              review.responses = [];
+            }
+            review.responses.push(response);
+            this.submittingResponse = false;
+            this.showSnackBar('Response added successfully', 'success');
+          },
+          error: (error) => {
+            console.error('Error adding response:', error);
+            this.showSnackBar('Error adding response', 'error');
+            this.submittingResponse = false;
+          }
+        });
+      }
+    });
+  }
+
+  deleteResponse(review: Review, responseId: number): void {
+    if (confirm('Are you sure you want to delete this response?')) {
+      this.responseService.deleteResponse(responseId).subscribe({
+        next: () => {
+          if (review.responses) {
+            review.responses = review.responses.filter(r => r.id !== responseId);
+          }
+          this.showSnackBar('Response deleted successfully', 'success');
+        },
+        error: (error) => {
+          console.error('Error deleting response:', error);
+          this.showSnackBar('Error deleting response', 'error');
         }
       });
     }

@@ -1,5 +1,6 @@
 package org.example.avisdevolss.service;
 
+import org.example.avisdevolss.dto.ResponseDto;
 import org.example.avisdevolss.dto.ReviewCreateDto;
 import org.example.avisdevolss.dto.ReviewFilterDto;
 import org.example.avisdevolss.dto.ReviewPublicDto;
@@ -29,14 +30,17 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final AccountRepository accountRepository;
     private final FlightRepository flightRepository;
+    private final ResponseService responseService;
 
     @Autowired
     public ReviewService(ReviewRepository reviewRepository,
                         AccountRepository accountRepository,
-                        FlightRepository flightRepository) {
+                        FlightRepository flightRepository,
+                        ResponseService responseService) {
         this.reviewRepository = reviewRepository;
         this.accountRepository = accountRepository;
         this.flightRepository = flightRepository;
+        this.responseService = responseService;
     }
 
     public ReviewResponseDto createReview(ReviewCreateDto reviewCreateDto, Integer accountId) {
@@ -177,6 +181,11 @@ public class ReviewService {
         dto.setAccountLastName(review.getAccount().getLastName());
         dto.setFlightNumber(review.getFlight().getFlightNumber());
         dto.setCompany(review.getFlight().getCompany());
+
+        // Récupérer les réponses associées à cette review
+        List<ResponseDto> responses = responseService.getResponsesByReviewId(review.getId());
+        dto.setResponses(responses);
+
         return dto;
     }
 
@@ -188,6 +197,11 @@ public class ReviewService {
         dto.setStatus(review.getStatus());
         dto.setFlightNumber(review.getFlight().getFlightNumber());
         dto.setCompany(review.getFlight().getCompany());
+
+        // Récupérer les réponses associées à cette review
+        List<ResponseDto> responses = responseService.getResponsesByReviewId(review.getId());
+        dto.setResponses(responses);
+
         return dto;
     }
 }

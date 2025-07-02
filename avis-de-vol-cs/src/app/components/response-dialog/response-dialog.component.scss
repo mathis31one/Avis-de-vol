@@ -1,0 +1,62 @@
+.full-width {
+  width: 100%;
+}
+
+mat-dialog-content {
+  min-height: 200px;
+  min-width: 400px;
+}
+
+.review-summary {
+  background-color: #f5f5f5;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.review-company {
+  font-weight: 500;
+}
+
+.review-rating {
+  display: flex;
+}
+
+.star-icon {
+  color: #ffc107;
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.review-content {
+  margin: 0;
+  padding: 0;
+  font-style: italic;
+  color: #666;
+  white-space: normal;
+  line-height: 1.4;
+}
+
+.response-form {
+  margin-top: 16px;
+}
+
+mat-dialog-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.spinner-button {
+  display: inline-block;
+  margin-left: 8px;
+  vertical-align: middle;
+}

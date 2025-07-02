@@ -1,0 +1,52 @@
+<h2 mat-dialog-title>
+  <mat-icon>comment</mat-icon>
+  {{ data.isAdmin ? 'Add Official Response' : 'Add Response' }}
+</h2>
+
+<mat-dialog-content>
+  <div class="review-summary">
+    <div class="review-header">
+      <span class="review-company">{{ data.review.company }} - {{ data.review.flightNumber }}</span>
+      <div class="review-rating">
+        <mat-icon *ngFor="let i of [1, 2, 3, 4, 5]" class="star-icon">
+          {{ i <= data.review.notation ? 'star' : 'star_border' }}
+        </mat-icon>
+      </div>
+    </div>
+    <p class="review-content">{{ data.review.content }}</p>
+  </div>
+  
+  <form [formGroup]="responseForm" class="response-form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Your Response</mat-label>
+      <textarea 
+        matInput 
+        formControlName="content" 
+        placeholder="Write your response here..." 
+        rows="4"></textarea>
+      <mat-hint align="end">{{ responseForm.get('content')?.value?.length || 0 }}/300</mat-hint>
+      <mat-error *ngIf="responseForm.get('content')?.hasError('required')">
+        Response is required
+      </mat-error>
+      <mat-error *ngIf="responseForm.get('content')?.hasError('minlength')">
+        Response must be at least 5 characters
+      </mat-error>
+      <mat-error *ngIf="responseForm.get('content')?.hasError('maxlength')">
+        Response cannot exceed 300 characters
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()" [disabled]="submitting">Cancel</button>
+  <button 
+    mat-raised-button 
+    color="primary" 
+    [disabled]="responseForm.invalid || submitting" 
+    (click)="onSubmit()">
+    <mat-icon>send</mat-icon>
+    Submit Response
+    <mat-spinner *ngIf="submitting" diameter="20" class="spinner-button"></mat-spinner>
+  </button>
+</mat-dialog-actions>

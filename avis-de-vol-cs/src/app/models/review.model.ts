@@ -9,6 +9,7 @@ export interface Review {
   status?: ReviewStatus;
   accountId?: number;
   accountName?: string;
+  responses?: Response[]; // Added responses array
 }
 
 export enum ReviewStatus {
@@ -33,4 +34,19 @@ export interface ReviewFilterDto {
   accountId?: number;
   notation?: number;
   status?: ReviewStatus;
+}
+
+// New interfaces for responses
+export interface Response {
+  id?: number;
+  content: string;
+  reviewId: number;
+  userId: number;
+  userName?: string;
+  userFirstName?: string; // Add firstname field
+}
+
+export interface ResponseCreateDto {
+  content: string;
+  reviewId: number;
 }

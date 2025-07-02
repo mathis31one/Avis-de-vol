@@ -1,0 +1,140 @@
+<div class="admin-reviews-container">
+  <app-header [currentUser]="currentUser"></app-header>
+  
+  <div class="admin-reviews-content">
+    <!-- Header Section -->
+    <div class="header-section">
+      <h1>
+        <mat-icon>admin_panel_settings</mat-icon>
+        Review Moderation
+      </h1>
+    </div>
+
+    <!-- Filter Section -->
+    <mat-card class="filter-card">
+      <mat-card-header>
+        <mat-card-title>Filter Reviews</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form [formGroup]="filterForm" class="filter-form">
+          <div class="filter-fields">
+            <mat-form-field appearance="outline">
+              <mat-label>Airline Company</mat-label>
+              <input
+                matInput
+                formControlName="company"
+                placeholder="Enter or select company"
+                [matAutocomplete]="companyAuto">
+              <mat-autocomplete #companyAuto="matAutocomplete">
+                <mat-option *ngFor="let company of companies" [value]="company">
+                  {{ company }}
+                </mat-option>
+              </mat-autocomplete>
+              <mat-icon matSuffix>business</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Status</mat-label>
+              <mat-select formControlName="status">
+                <mat-option *ngFor="let option of statusOptions" [value]="option.value">
+                  {{ option.label }}
+                </mat-option>
+              </mat-select>
+              <mat-icon matSuffix>filter_list</mat-icon>
+            </mat-form-field>
+          </div>
+          
+          <div class="filter-actions">
+            <button mat-raised-button color="primary" type="button" (click)="onFilterChange()">
+              <mat-icon>search</mat-icon>
+              Filter
+            </button>
+            <button mat-stroked-button type="button" (click)="clearFilter()">
+              <mat-icon>clear</mat-icon>
+              Clear
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Reviews List -->
+    <div class="reviews-list">
+      <!-- Loading Spinner -->
+      <div class="loading-container" *ngIf="isLoading">
+        <mat-spinner></mat-spinner>
+      </div>
+      
+      <!-- No Reviews Message -->
+      <div class="no-reviews" *ngIf="!isLoading && reviews.length === 0">
+        <mat-icon>sentiment_dissatisfied</mat-icon>
+        <h3>No Reviews Found</h3>
+        <p>There are no reviews matching your criteria.</p>
+      </div>
+      
+      <!-- Reviews -->
+      <mat-card class="review-card" *ngFor="let review of reviews">
+        <mat-card-header>
+          <div mat-card-avatar class="flight-avatar">
+            <mat-icon>flight</mat-icon>
+          </div>
+          <mat-card-title>{{ review.company }} - {{ review.flightNumber }}</mat-card-title>
+          <mat-card-subtitle>
+            {{ review.date | date:'mediumDate' }} | 
+            <span [class]="getStatusClass(review.status)">{{ review.status }}</span>
+          </mat-card-subtitle>
+          
+          <div class="review-actions">
+            <ng-container *ngIf="review.status === ReviewStatus.TRAITE">
+              <button 
+                mat-icon-button 
+                color="primary" 
+                (click)="publishReview(review)"
+                matTooltip="Publish Review"
+                [disabled]="isProcessing">
+                <mat-icon>thumb_up</mat-icon>
+              </button>
+              
+              <button 
+                mat-icon-button 
+                color="warn" 
+                (click)="rejectReview(review)"
+                matTooltip="Reject Review"
+                [disabled]="isProcessing">
+                <mat-icon>thumb_down</mat-icon>
+              </button>
+            </ng-container>
+            
+            <button 
+              mat-icon-button 
+              (click)="deleteReview(review)"
+              matTooltip="Delete Review"
+              [disabled]="isProcessing">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <div class="rating">
+            <mat-icon *ngFor="let star of getStars(review.notation)" class="star-icon">
+              {{ star }}
+            </mat-icon>
+            <span class="rating-text">{{ review.notation }}/5</span>
+          </div>
+          
+          <div class="user-info" *ngIf="review.accountName">
+            <mat-icon>person</mat-icon>
+            <span>{{ review.accountName }}</span>
+          </div>
+          
+          <div class="review-comment">
+            <p>{{ review.comment }}</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  
+  <app-footer></app-footer>
+</div>

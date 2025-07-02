@@ -1,0 +1,147 @@
+<div class="flights-container">
+  <app-header [currentUser]="currentUser"></app-header>
+  
+  <div class="flights-content">
+    <!-- Header Section -->
+    <div class="header-section">
+      <h1>
+        <mat-icon>{{ isReviewMode ? 'rate_review' : 'flight_takeoff' }}</mat-icon>
+        {{ pageTitle }}
+      </h1>
+    </div>
+
+    <!-- Search Section -->
+    <mat-card class="search-card">
+      <mat-card-header>
+        <mat-card-title>Find Flights</mat-card-title>
+        <mat-card-subtitle>{{ pageSubtitle }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="search-form">
+          <div class="search-fields">
+            <mat-form-field appearance="outline">
+              <mat-label>Company</mat-label>
+              <input
+                matInput
+                formControlName="company"
+                placeholder="Enter or select company"
+                [matAutocomplete]="companyAuto">
+              <mat-autocomplete #companyAuto="matAutocomplete">
+                <mat-option *ngFor="let company of companies" [value]="company">
+                  {{ company }}
+                </mat-option>
+              </mat-autocomplete>
+              <mat-icon matSuffix>business</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Start Date</mat-label>
+              <input matInput [matDatepicker]="startPicker" formControlName="startDate">
+              <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+              <mat-datepicker #startPicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>End Date</mat-label>
+              <input matInput [matDatepicker]="endPicker" formControlName="endDate">
+              <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+              <mat-datepicker #endPicker></mat-datepicker>
+            </mat-form-field>
+          </div>
+          
+          <div class="search-actions">
+            <button mat-raised-button color="primary" type="submit">
+              <mat-icon>search</mat-icon>
+              Search
+            </button>
+            <button mat-stroked-button type="button" (click)="clearSearch()">
+              <mat-icon>clear</mat-icon>
+              Clear
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Results Section -->
+    <mat-card class="results-card">
+      <mat-card-header>
+        <mat-card-title>
+          Flights ({{ filteredFlights.length }})
+        </mat-card-title>
+        <mat-card-subtitle>{{ isReviewMode ? 'Select a flight to review' : 'Browse available flights' }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="table-container">
+          <table mat-table [dataSource]="filteredFlights" class="flights-table">
+            
+            <!-- Flight Number Column -->
+            <ng-container matColumnDef="flightNumber">
+              <th mat-header-cell *matHeaderCellDef>Flight Number</th>
+              <td mat-cell *matCellDef="let flight">
+                <div class="flight-number">
+                  <mat-icon>flight_takeoff</mat-icon>
+                  {{ flight.flightNumber }}
+                </div>
+              </td>
+            </ng-container>
+
+            <!-- Company Column -->
+            <ng-container matColumnDef="company">
+              <th mat-header-cell *matHeaderCellDef>Company</th>
+              <td mat-cell *matCellDef="let flight">
+                <div class="company">
+                  <mat-icon>business</mat-icon>
+                  {{ flight.company }}
+                </div>
+              </td>
+            </ng-container>
+
+            <!-- Date Column -->
+            <ng-container matColumnDef="date">
+              <th mat-header-cell *matHeaderCellDef>Date</th>
+              <td mat-cell *matCellDef="let flight">
+                <div class="date">
+                  <mat-icon>event</mat-icon>
+                  {{ flight.date | date:'mediumDate' }}
+                </div>
+              </td>
+            </ng-container>
+
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td mat-cell *matCellDef="let flight">
+                <button 
+                  mat-raised-button 
+                  [color]="isReviewMode ? 'primary' : 'accent'"
+                  (click)="addReview(flight)"
+                  aria-label="Add a review for this flight">
+                  <mat-icon>{{ isReviewMode ? 'rate_review' : 'comment' }}</mat-icon>
+                  {{ buttonLabel }}
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+
+          <!-- Loading Spinner -->
+          <div class="loading-container" *ngIf="isLoading">
+            <mat-spinner></mat-spinner>
+          </div>
+
+          <!-- No Data Message -->
+          <div class="no-data" *ngIf="!isLoading && filteredFlights.length === 0">
+            <mat-icon>{{ isReviewMode ? 'rate_review' : 'flight' }}</mat-icon>
+            <h3>No flights found</h3>
+            <p>Try adjusting your search criteria or check back later.</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  
+  <app-footer></app-footer>
+</div>

@@ -22,6 +22,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSelectModule } from '@angular/material/select';
+import { MatBadgeModule } from '@angular/material/badge';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -35,6 +37,10 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { HasRoleDirective } from './directives/has-role.directive';
 import { HeaderComponent } from './components/shared/header/header.component';
 import { FooterComponent } from './components/shared/footer/footer.component';
+import { FlightsComponent } from './components/flights/flights.component';
+import { ReviewFormComponent } from './components/review-form/review-form.component';
+import { ReviewsComponent } from './components/reviews/reviews.component';
+import { AdminReviewsComponent } from './components/admin-reviews/admin-reviews.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +53,11 @@ import { FooterComponent } from './components/shared/footer/footer.component';
     FlightDialogComponent,
     HasRoleDirective,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    FlightsComponent,
+    ReviewFormComponent,
+    ReviewsComponent,
+    AdminReviewsComponent
   ],
   imports: [
     BrowserModule,
@@ -72,7 +82,9 @@ import { FooterComponent } from './components/shared/footer/footer.component';
     MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatSelectModule,
+    MatBadgeModule
   ],
   providers: [
     {

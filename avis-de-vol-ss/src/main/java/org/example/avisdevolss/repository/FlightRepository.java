@@ -28,4 +28,10 @@ public interface FlightRepository extends JpaRepository<Flight, Integer> {
 
     @Query("SELECT MAX(f.date) FROM Flight f")
     Date findMaxDate();
+
+    @Query("SELECT COUNT(f) FROM Flight f")
+    long countAllFlights();
+
+    @Query("SELECT COUNT(DISTINCT f.company) FROM Flight f")
+    long countDistinctCompanies();
 }

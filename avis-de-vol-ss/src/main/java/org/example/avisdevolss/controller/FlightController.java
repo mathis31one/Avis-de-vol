@@ -98,6 +98,26 @@ public class FlightController {
         return ResponseEntity.ok(companies);
     }
 
+    @GetMapping("/count")
+    public ResponseEntity<Long> getCountFlights() {
+        try {
+            long count = flightService.getCountFlights();
+            return ResponseEntity.ok(count);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/companies/count")
+    public ResponseEntity<Long> getCountCompany() {
+        try {
+            long count = flightService.getCountCompany();
+            return ResponseEntity.ok(count);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     private FlightDTO convertToDTO(Flight flight) {
         FlightDTO dto = new FlightDTO();
         dto.setId(flight.getId());

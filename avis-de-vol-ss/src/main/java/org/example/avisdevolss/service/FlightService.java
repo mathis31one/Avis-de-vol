@@ -110,4 +110,12 @@ public class FlightService {
     public List<String> findAllCompanies() {
         return flightRepository.findAllCompanies();
     }
+
+    public long getCountFlights() {
+        return flightRepository.countAllFlights();
+    }
+
+    public long getCountCompany() {
+        return flightRepository.countDistinctCompanies();
+    }
 }

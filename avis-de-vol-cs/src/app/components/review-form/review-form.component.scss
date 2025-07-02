@@ -1,0 +1,188 @@
+.review-form-container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.review-form-content {
+  padding: 24px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.header-section {
+  margin-bottom: 24px;
+  
+  h1 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+    color: #1976d2;
+    
+    mat-icon {
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+    }
+  }
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  
+  p {
+    margin-top: 16px;
+    color: rgba(0, 0, 0, 0.6);
+  }
+}
+
+.selected-flight {
+  background-color: rgba(25, 118, 210, 0.05);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+  
+  h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #1976d2;
+  }
+  
+  .flight-details {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    
+    .detail-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      
+      mat-icon {
+        color: #666;
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+      
+      .label {
+        font-weight: 500;
+        min-width: 60px;
+      }
+      
+      .value {
+        font-weight: 400;
+        color: #333;
+      }
+    }
+  }
+}
+
+.review-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.rating-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  
+  label {
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.87);
+    margin-bottom: 8px;
+  }
+  
+  .star-rating {
+    display: flex;
+    gap: 4px;
+    
+    button {
+      padding: 0;
+      width: 40px;
+      height: 40px;
+      
+      mat-icon {
+        font-size: 32px;
+        width: 32px;
+        height: 32px;
+      }
+    }
+  }
+  
+  .rating-label {
+    margin-top: 8px;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.6);
+  }
+}
+
+.form-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+  
+  button {
+    min-width: 120px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+    
+    .spinner-button {
+      margin-left: 8px;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .review-form-content {
+    padding: 16px;
+  }
+  
+  .header-section h1 {
+    font-size: 24px;
+    
+    mat-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+    }
+  }
+  
+  .rating-section .star-rating button {
+    width: 36px;
+    height: 36px;
+    
+    mat-icon {
+      font-size: 28px;
+      width: 28px;
+      height: 28px;
+    }
+  }
+  
+  .form-actions {
+    flex-direction: column;
+    
+    button {
+      width: 100%;
+    }
+  }
+}

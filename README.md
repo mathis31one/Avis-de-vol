@@ -57,10 +57,15 @@ La sécurité est une préoccupation majeure. L'application s'appuie sur **JWT**
 
 Et comme vu précédemment, on utilise aussi **BCrypt** pour ne pas stocker les mots de passe ne clair.
 
+//todo : la sécurité est dans le back (d'ailleurs l'IA ne le propose pas de base)
 
-Idées d'amélioration
+## Idées d'amélioration
 
-Utilisation d'API
+Le plus évident : rendre plus exhaustifs les objects (surtout le vol qui aurait par exemple besoin des aéroports, heures d'arrivée et départ) mais cela rendrait la démo lourde à utiliser au vu du fait que les vols soient créés à la main)
+
+Utilisation d'API publiques pour récupérer les vols : ici il s'agit d'une démo mais si les API étaient facilement libre d'accès (elles demandent toutes un compte et un jeton API pour des quantités limités d'informations ce qui m'a poussé à ne pas l'intégrer) elles permettraient de retrouver, sans avoir à l'ajouter manuellement, les compagnies et vols.
+
+Suite à l'intégration de l'authentification, il faudrait sécuriser le back car dans la version actulle,
 
 # Lancer l'application
 
@@ -101,3 +106,7 @@ docker-compose down -v
 * **Frontend (Angular):** [http://localhost:4200](http://localhost:4200)
 * **Backend API:** http://localhost:8080/api
 * **PostgreSQL:** localhost:5432 (username: username, password: password)
+
+Comptes initialement crées :
+
+Admin : admin@avisdevol.com/admin123

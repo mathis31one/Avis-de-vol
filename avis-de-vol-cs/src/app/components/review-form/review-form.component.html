@@ -1,0 +1,108 @@
+<div class="review-form-container">
+  <app-header [currentUser]="currentUser"></app-header>
+  
+  <div class="review-form-content">
+    <div class="header-section">
+      <h1>
+        <mat-icon>rate_review</mat-icon>
+        Write a Review
+      </h1>
+    </div>
+
+    <mat-card class="review-card">
+      <mat-card-header>
+        <mat-card-title>Review Your Flight Experience</mat-card-title>
+        <mat-card-subtitle>Your feedback helps other travelers make informed decisions</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <!-- Loading spinner -->
+        <div class="loading-container" *ngIf="isLoading">
+          <mat-spinner diameter="40"></mat-spinner>
+          <p>Loading flight details...</p>
+        </div>
+
+        <!-- Flight details -->
+        <div class="selected-flight" *ngIf="selectedFlight && !isLoading">
+          <h3>Flight Details</h3>
+          <div class="flight-details">
+            <div class="detail-item">
+              <mat-icon>flight_takeoff</mat-icon>
+              <span class="label">Flight:</span>
+              <span class="value">{{ selectedFlight.flightNumber }}</span>
+            </div>
+            <div class="detail-item">
+              <mat-icon>business</mat-icon>
+              <span class="label">Company:</span>
+              <span class="value">{{ selectedFlight.company }}</span>
+            </div>
+            <div class="detail-item">
+              <mat-icon>event</mat-icon>
+              <span class="label">Date:</span>
+              <span class="value">{{ selectedFlight.date | date:'longDate' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <form [formGroup]="reviewForm" (ngSubmit)="onSubmit()" class="review-form" *ngIf="!isLoading">
+          <!-- Star Rating -->
+          <div class="rating-section">
+            <label>Your Rating</label>
+            <div class="star-rating">
+              <button 
+                type="button" 
+                mat-icon-button 
+                *ngFor="let star of stars"
+                (click)="setRating(star)"
+                (mouseenter)="onStarHover(star)"
+                (mouseleave)="onStarLeave()">
+                <mat-icon [style.color]="getStarColor(star)">{{ getStar(star) }}</mat-icon>
+              </button>
+            </div>
+            <div class="rating-label">
+              {{ reviewForm.get('notation')?.value ? reviewForm.get('notation')?.value + ' stars' : 'Select rating' }}
+            </div>
+            <mat-error *ngIf="getErrorMessage('notation')">
+              {{ getErrorMessage('notation') }}
+            </mat-error>
+          </div>
+
+          <!-- Comment -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Your Review</mat-label>
+            <textarea 
+              matInput 
+              formControlName="comment"
+              placeholder="Share your experience about this flight..."
+              rows="6"></textarea>
+            <mat-hint align="end">{{ reviewForm.get('comment')?.value?.length || 0 }}/500</mat-hint>
+            <mat-error *ngIf="getErrorMessage('comment')">
+              {{ getErrorMessage('comment') }}
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Submit Button -->
+          <div class="form-actions">
+            <button 
+              mat-raised-button
+              color="primary"
+              type="submit"
+              [disabled]="reviewForm.invalid || submitting">
+              <mat-icon>send</mat-icon>
+              Submit Review
+              <mat-spinner *ngIf="submitting" diameter="20" class="spinner-button"></mat-spinner>
+            </button>
+            <button 
+              mat-stroked-button
+              type="button"
+              routerLink="/make-review">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  
+  <app-footer></app-footer>
+</div>

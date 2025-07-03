@@ -64,6 +64,8 @@ Pour les classes, il s'agit bien d'objets BD. On utilise ici une BD relationnell
 
 Enfin, on fonctionne via des repository, qui ne traitent que les BD, des services qui s'occupent du traitement de données et contiennent tout le code métier et enfin les controlleurs qui permettent d'interfacer avec l'application web et vérfifient la connexion de l'utilisateur.
 
+Le lien entre le front et le back se fait via des requêtes API REST. Il y a donc des services Angular qui vont se connecter aux endpoints pour leur adresser les requêtes.
+
 ---
 
 ## Technologies Clés

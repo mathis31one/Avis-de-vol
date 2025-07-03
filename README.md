@@ -60,7 +60,9 @@ On retrouve donc un Compte (Account) qui a un rôle. Il peut écrire des avis et
 
 Les énumérations ne sont pas des objets bd (ils sont gérés par hibernate pour passer du Java à la BD)
 
-Pour les Class, il s'agit bien d'objets BD. On utilise ici une BD relationnelle car les objets ont de fortes interdépendance et on un format fixe. On aurait toutefois pu imaginer au moins une partie en NoSQL orienté document pour stocker les avis de façon plus flexible.
+Pour les classes, il s'agit bien d'objets BD. On utilise ici une BD relationnelle car les objets ont de fortes interdépendance et on un format fixe. On aurait toutefois pu imaginer au moins une partie en NoSQL orienté document pour stocker les avis de façon plus flexible.
+
+Enfin, on fonctionne via des repository, qui ne traitent que les BD, des services qui s'occupent du traitement de données et contiennent tout le code métier et enfin les controlleurs qui permettent d'interfacer avec l'application web et vérfifient la connexion de l'utilisateur.
 
 ---
 

@@ -131,6 +131,8 @@ De plus, des contrôles de sécurité sont fait dans le back pour s'assurer qu'u
 
 - Étoffer les objects par exemple le vol qui aurait pu intégrer aéroports, heures d'arrivée, départ et type d'avion mais cela rendrait la démo lourde à utiliser au vu du fait que les vols soient créés à la main.
 - Utilisation d'API publiques pour récupérer les vols : ici il s'agit d'une démo mais si les API étaient facilement libre d'accès (elles demandent toutes un compte et un jeton API pour des quantités limitées d'informations ce qui m'a poussé à ne pas l'intégrer) elles permettraient de retrouver, sans avoir à l'ajouter manuellement, les compagnies et vols.
+- Ajout de tests : comme il s'agit d'un développement dans un temps imparti et sans volonté d'améliorations futures, le choix de ne pas faire de tests a été fait.
+- Cepandant, dans un environement plus maitrisé et avec des évolutions possibles, il aurait été intéressant d'en intégrer dès le début pour être sûr d'éviter une régression.
 
 ---
 

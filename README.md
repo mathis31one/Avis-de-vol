@@ -50,6 +50,8 @@ un server de recette, idéal en cas de difficultés à lancer est disponible sou
 
 Il est lui même le docker décrit ici, exposé depuis un server VPS.
 
+Attention il se pourrait qu'il ne soit pas disponible depuis un réseau interne (bloqué par le pare-feu par exemple)
+
 # Architecture du Projet:
 
 ![1751486586678](image/readme/1751486586678.png)
